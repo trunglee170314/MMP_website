@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional, List, Iterable
 from typing_extensions import Protocol
 from sqlalchemy.orm import Session
 from sqlalchemy import select
@@ -17,6 +17,7 @@ class UserRepository(Protocol):
     def update_password(self, user_id: int, hashed_pw: str) -> Optional[models.User]: ...
     def update_user(self, payload: InUserUpdate) -> Optional[models.User]: ...
     def get_by_id(self, user_id: int) -> Optional[models.User]: ...
+    def get_by_ids(self, user_ids: Iterable[int]) -> List[models.User]: ...
     def get_list_appr_user(self) -> List[models.User]: ...
     def create_admin(self): ...
 
@@ -42,6 +43,11 @@ class SqlAlchemyUserRepository:
         if not user:
             return None
         return user
+
+    def get_by_ids(self, user_ids: Iterable[int]) -> List[models.User]:
+        if not user_ids:
+            return []
+        return self.db.scalars(select(models.User).where(models.User.id.in_(user_ids))).all()
 
     def create(self, payload: InUserCreate, password_hash:str) -> models.User:
         u = models.User(
@@ -102,7 +108,6 @@ class SqlAlchemyUserRepository:
             user.password_hash = security.hash_password(payload.password)
 
         for field, value in data.items():
-            print(field)
             setattr(user, field, value)
 
         self.db.commit()
