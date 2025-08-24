@@ -1,4 +1,5 @@
 from typing import Optional
+from .schemas import UserCreate
 from .repository import UserRepository
 from . import models
 from ..core import security
@@ -7,11 +8,12 @@ class UserService:
     def __init__(self, repo: UserRepository):
         self.repo = repo
 
-    def register(self, email: str, raw_password: str, role: Optional[str] = "user") -> models.User:
-        if self.repo.get_by_email(email):
+    def register(self, payload: UserCreate) -> models.User:
+        if self.repo.get_by_email(payload.email):
             raise ValueError("Email already registered")
-        hashed = security.hash_password(raw_password)
-        return self.repo.create(email=email, password_hash=hashed, role=role or "user")
+        hashed = security.hash_password(payload.password)
+    
+        return self.repo.create(payload, hashed)
 
     def authenticate(self, email: str, raw_password: str) -> Optional[models.User]:
         user = self.repo.get_by_email(email)

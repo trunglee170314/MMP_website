@@ -6,6 +6,7 @@ from .iam.api import router as iam_router
 from .tasks.api import router as tasks_router
 from .iam import models as iam_models  # noqa: F401 - ensure metadata is loaded
 from .tasks import models as task_models  # noqa: F401 - ensure metadata is loaded
+from .iam.repository import UserRepository
 
 Base.metadata.create_all(bind=engine)
 
@@ -18,6 +19,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 app.include_router(iam_router)
 app.include_router(tasks_router)

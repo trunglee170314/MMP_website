@@ -8,6 +8,7 @@ from .service import UserService
 from ..core.db import get_db
 from ..core.security import decode_token
 from . import models
+from ..core.Enum.roles_enum import RoleEnum
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
@@ -40,7 +41,7 @@ def get_current_user(
 
 
 def require_admin(current_user: models.User = Depends(get_current_user)) -> models.User:
-    if current_user.role != "admin":
+    if current_user.role != RoleEnum.admin:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Admins only")
     return current_user
 
