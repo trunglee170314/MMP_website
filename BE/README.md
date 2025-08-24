@@ -14,6 +14,7 @@
     │  │  └─ security.py
     │  ├─ iam/                  # User & Authentication (Identity and Access Management)
     │  │  ├─ models.py
+    │  │  |─ association.py
     │  │  ├─ schemas.py
     │  │  ├─ repository.py
     │  │  ├─ service.py
