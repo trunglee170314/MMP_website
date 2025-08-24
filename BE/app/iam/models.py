@@ -1,4 +1,7 @@
 from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy.orm import relationship
+
+from .association import user_board
 from ..core.db import Base
 from ..utilities.role_name_enum import RoleEnum
 
@@ -12,4 +15,6 @@ class User(Base):
     number_phone = Column(String(100), nullable=True)
     password_hash = Column(String(255), nullable=False)
     auth_registered = Column(Boolean, default=True, nullable=False)
-    role = Column(String(50), default="user", nullable=False)
+    role = Column(String(50), default=RoleEnum.user, nullable=False)
+
+    boards = relationship("Board", secondary=user_board, back_populates="owners")
