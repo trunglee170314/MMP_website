@@ -3,4 +3,9 @@ from sqlalchemy.orm import relationship
 from ..core.db import Base
 
 class Task(Base):
-    pass
+    __tablename__ = "tasks"
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(255), nullable=False)
+    done = Column(Boolean, default=False, nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    owner = relationship("User", backref="tasks")
