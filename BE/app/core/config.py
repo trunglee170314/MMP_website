@@ -9,5 +9,6 @@ class Settings(BaseModel):
     access_token_expire_minutes: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
     database_url: str = os.getenv("DATABASE_URL")
     cors_origins: str = os.getenv("CORS_ORIGINS")
+    default_pw: str = os.getenv("DEFAULT_PW")
 
 settings = Settings()
