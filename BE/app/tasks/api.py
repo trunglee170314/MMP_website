@@ -5,6 +5,7 @@ from ..iam.deps import require_user
 from .repository import SqlAlchemyTaskRepository
 from .service import TaskService
 from .schemas import TaskCreate, TaskUpdate, TaskOut
+from typing import List
 
 router = APIRouter(prefix="/tasks", tags=["tasks"])
 
@@ -13,7 +14,7 @@ def get_service(db: Session = Depends(get_db)) -> TaskService:
     return TaskService(SqlAlchemyTaskRepository(db))
 
 
-@router.get("/", response_model=list[TaskOut])
+@router.get("/", response_model=List[TaskOut])
 def list_my_tasks(current=Depends(require_user), svc: TaskService = Depends(get_service)):
     return svc.repo.list_by_user(current.id)
 
