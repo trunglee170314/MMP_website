@@ -15,3 +15,4 @@ class Board(Base):
     location = Column(String(512), default="", nullable=True)
 
     owners = relationship("User", secondary=user_board, back_populates="boards")
+    tasks = relationship("Task", back_populates="board")

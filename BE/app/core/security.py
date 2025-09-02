@@ -15,12 +15,12 @@ def hash_password(raw: str) -> str:
 def verify_password(raw: str, hashed: str) -> bool:
     return pwd_ctx.verify(raw, hashed)
 
-def create_access_token(data: dict, expires_minutes: Optional[int] = None) -> str:
+def create_access_token(data: dict, expires_minutes: Optional[int] = None) -> dict:
     expire_minutes = expires_minutes or settings.access_token_expire_minutes
     to_encode = data.copy()
     expire = dt.datetime.utcnow() + dt.timedelta(minutes=expire_minutes)
     to_encode.update({"exp": expire})
-    return jwt.encode(to_encode, settings.secret_key, algorithm=ALGORITHM)
+    return {"access_token": jwt.encode(to_encode, settings.secret_key, algorithm=ALGORITHM), "expire": expire}
 
 def decode_token(token: str) -> dict:
     return jwt.decode(token, settings.secret_key, algorithms=[ALGORITHM])

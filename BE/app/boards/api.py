@@ -7,6 +7,7 @@ from ..iam.repository import SqlAlchemyUserRepository
 from .repository import SqlAlchemyBoardRepository
 from .service import BoardService
 from .schemas import InBoard, OutBoard
+from typing import List
 
 router = APIRouter(prefix="/boards", tags=["boards"])
 

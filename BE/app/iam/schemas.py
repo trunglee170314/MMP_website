@@ -1,10 +1,12 @@
 from typing import Any, Optional
 from pydantic import BaseModel, EmailStr, ConfigDict
 from ..utilities.role_name_enum import RoleEnum
+from datetime import datetime
 
 class OutToken(BaseModel):
     access_token: str
     token_type: str = "bearer"
+    expire: datetime
 
 class InUserCreate(BaseModel):
     email: EmailStr
