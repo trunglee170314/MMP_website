@@ -1,6 +1,6 @@
 from typing import Any, Optional
 from pydantic import BaseModel, EmailStr, ConfigDict
-from ..utilities.role_name_enum import RoleEnum
+from ..utilities.common_enums import RoleEnum
 from datetime import datetime
 
 class OutToken(BaseModel):

@@ -4,12 +4,12 @@ from sqlalchemy import Boolean
 from datetime import datetime
 
 
-class TypeTaskOut(BaseModel):
+class ClassificationOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: int
-    type_task_name: str
+    name: str
     description: str
 
-class TypeTaskCreateUpdate(BaseModel):
-    name: Optional[str] = None
+class ClassificationCreateUpdate(BaseModel):
+    name: str
     description: Optional[str] = None

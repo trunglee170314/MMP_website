@@ -2,11 +2,11 @@ from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Text, DateT
 from sqlalchemy.orm import relationship
 from ..core.db import Base
 
-class TypeTask(Base):
-    __tablename__ = "type_tasks"
+class Classification(Base):
+    __tablename__ = "classifications"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    type_task_name = Column(String(225), nullable=False)
+    name = Column(String(225), nullable=False)
     description = Column(Text, nullable=True)
 
-    tasks = relationship("Task", back_populates="type_task")
+    tasks = relationship("Task", back_populates="classification")

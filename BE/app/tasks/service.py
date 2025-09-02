@@ -10,8 +10,8 @@ class TaskService:
     def get_list_task(self) -> Optional[models.Task]:
         return self.repo.get_list_task()
     
-    def get_list_task_appr(self) -> Optional[models.Task]:
-        return self.repo.get_list_task_appr()
+    def get_list_task_waiting_appr(self) -> Optional[models.Task]:
+        return self.repo.get_list_task_waiting_appr()
     
     def get_task_id(self, task_id: int) -> Optional[models.Task]:
         return self.repo.get_task_by_id(task_id)
@@ -30,6 +30,9 @@ class TaskService:
     
     def approve_task(self, task_id: int) -> Optional[models.Task]:
         return self.repo.approve_task(task_id)
+    
+    def resolved_task(self, task_id: int) -> Optional[models.Task]:
+        return self.repo.resolved_task(task_id)
     
     def delete_task(self, task_id: int) -> bool:
         return self.repo.delete_task(task_id)
