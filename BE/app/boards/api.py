@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from ..core.db import get_db
-from ..iam.deps import require_user, require_admin
+from ..iam.deps import require_user
+from ..iam.repository import SqlAlchemyUserRepository
 from .repository import SqlAlchemyBoardRepository
 from .service import BoardService
 from .schemas import InBoard, OutBoard
@@ -9,12 +10,18 @@ from .schemas import InBoard, OutBoard
 router = APIRouter(prefix="/boards", tags=["boards"])
 
 def get_board_service(db: Session = Depends(get_db)) -> BoardService:
-    return BoardService(SqlAlchemyBoardRepository(db))
+    return BoardService(SqlAlchemyBoardRepository(db), SqlAlchemyUserRepository(db))
 
 # Get all boards
 @router.get("/", response_model=list[OutBoard], dependencies = [Depends(require_user)])
 def list_all_board(svc: BoardService = Depends(get_board_service)):
     return svc.list_all_board()
+
+# Get my boards
+@router.get("/me", response_model=list[OutBoard], dependencies = [Depends(require_user)])
+def list_my_board(current_user = Depends(require_user),
+                  svc: BoardService = Depends(get_board_service)):
+        return svc.list_my_boards(current_user.id)
 
 # Get a board
 @router.get("/{board_id}", response_model=OutBoard, dependencies = [Depends(require_user)])
@@ -42,7 +49,7 @@ def delete_board(board_id: int, svc: BoardService = Depends(get_board_service)):
         return {"detail": "Board deleted"}
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
-    except Exception as e:
+    except Exception:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # Update a board
@@ -53,5 +60,5 @@ def update_board(board_id: int, payload: InBoard, svc: BoardService = Depends(ge
         return {"id": board.id}
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
-    except Exception as e:
+    except Exception:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)

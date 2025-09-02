@@ -1,12 +1,13 @@
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel, ConfigDict
+from ..iam.schemas import OutUser
 
 class InBoard(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     board_name: str
     barcode: int
     ip: Optional[int] = None
-    owner: Optional[str] = None
+    owner_ids: Optional[List[int]] = None
     note: Optional[str] = None
     status: str
     location: Optional[str] = None
@@ -17,7 +18,7 @@ class OutBoard(BaseModel):
     board_name: str
     barcode: int
     ip: Optional[int] = None
-    owner: Optional[str] = None
+    owners: List[OutUser]
     note: Optional[str] = None
     status: str
     location: Optional[str] = None

@@ -1,4 +1,4 @@
-from sqlalchemy import Table, Column, Integer, ForeignKey, UniqueConstraint
+from sqlalchemy import Table, Column, ForeignKey, UniqueConstraint
 from ..core.db import Base
 
 user_board = Table(
