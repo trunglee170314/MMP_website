@@ -14,7 +14,7 @@ def get_board_service(db: Session = Depends(get_db)) -> BoardService:
     return BoardService(SqlAlchemyBoardRepository(db), SqlAlchemyUserRepository(db))
 
 # Get all boards
-@router.get("/", response_model=list[OutBoard], dependencies = [Depends(require_user)])
+@router.get("/", response_model=List[OutBoard], dependencies = [Depends(require_user)])
 def list_all_board(svc: BoardService = Depends(get_board_service)):
     return svc.list_all_board()
 
