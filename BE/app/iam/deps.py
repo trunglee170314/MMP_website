@@ -8,7 +8,7 @@ from .service import UserService
 from ..core.db import get_db
 from ..core.security import decode_token
 from . import models
-from ..utilities.role_name_enum import RoleEnum
+from ..utilities.common_enums import RoleEnum
 
 #HTTPBearer
 bearer_scheme = HTTPBearer()

@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select
 from .schemas import InUserCreate, InUserUpdate
 from . import models
-from ..utilities.role_name_enum import RoleEnum
+from ..utilities.common_enums import RoleEnum
 from ..core import security
 
 class UserRepository(Protocol):

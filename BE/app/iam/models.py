@@ -3,7 +3,8 @@ from sqlalchemy.orm import relationship
 
 from .association import user_board
 from ..core.db import Base
-from ..utilities.role_name_enum import RoleEnum
+from ..utilities.common_enums import RoleEnum
+from sqlalchemy.orm import relationship
 
 class User(Base):
     __tablename__  = "users"
@@ -18,3 +19,4 @@ class User(Base):
     role = Column(String(50), default=RoleEnum.user, nullable=False)
 
     boards = relationship("Board", secondary=user_board, back_populates="owners")
+    tasks = relationship("Task", back_populates="pic")

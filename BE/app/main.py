@@ -2,10 +2,16 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .core.db import Base, engine, get_db
 from .core.config import settings
+
 from .iam.api import router as iam_router
 from .boards.api import router as boards_router
+from .tasks.api import router as tasks_router
+from .classifications.api import router as classifications_router
+
 from .iam import models as iam_models  # noqa: F401 - ensure metadata is loaded
-from .boards import models as board_models  # noqa: F401 - ensure metadata is loaded
+from .boards import models as board_models
+from .tasks import models as task_models
+from .classifications import models as classification_models
 from .iam.repository import SqlAlchemyUserRepository
 
 Base.metadata.create_all(bind=engine)
@@ -29,3 +35,5 @@ def startup_event():
 
 app.include_router(iam_router)
 app.include_router(boards_router)
+app.include_router(tasks_router)
+app.include_router(classifications_router)

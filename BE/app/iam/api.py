@@ -23,7 +23,7 @@ def register(payload: InUserCreate, svc: UserService = Depends(get_user_service)
         return {"id": user.id}
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
-    except Exception as e:
+    except Exception:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # Login
@@ -47,7 +47,11 @@ def login(payload: InLogin, svc: UserService = Depends(get_user_service)):
             "role": user.role
         })
 
-    return {"access_token": token, "token_type": "bearer"}
+    return {
+        "access_token": token["access_token"],
+        "token_type": "bearer",
+        "expire": token["expire"],
+    }
 
 # Get waiting approve list (admin)
 @router.get("/user/admin/appr_list", response_model=List[OutUser], dependencies=[Depends(require_admin)])
